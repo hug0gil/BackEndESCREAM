@@ -1,12 +1,22 @@
 <?php
 
 use App\Http\Controllers\MoviesController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/test", function () {
     return "El backend funciona correctamente";
 });
 
+Route::prefix('users')->group(function () {
+    Route::get("/", [UsersController::class, "index"]);
+    Route::post("/login", [UsersController::class, "logIn"]);
+    Route::post("/register", [UsersController::class, "register"]);
+    Route::put("/update", [UsersController::class, "update"]);
+    Route::delete("/delete", [UsersController::class, "delete"]);
+});
+
+// Poner middleware básico de JWT
 Route::apiResource("/movies", MoviesController::class);
 
 /*

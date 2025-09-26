@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateMovieRequest;
+use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -35,5 +36,50 @@ class MoviesController extends Controller
         } catch (ValidationException $e) {
             return response()->json(["errors" => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+    }
+
+    public function show(Movie $movie)
+    {
+
+        if (!$movie) {
+            return response()->json(["error" => "Movie not found"], Response::HTTP_NOT_FOUND);
+        }
+        return response()->json([$movie], Response::HTTP_OK);
+    }
+
+    public function update(UpdateMovieRequest $updateMovieRequest, Movie $movie)
+    {
+
+        try {
+            $movie->update($updateMovieRequest->validated());
+
+            // Actualiza campos de la tabla principal
+            $movie->update($updateMovieRequest->validated());
+
+            // Actualiza actores si vienen en la request
+            if ($updateMovieRequest->has('actor_ids')) {
+                $movie->actors()->sync($updateMovieRequest->validated('actor_ids', []));
+            }
+
+            // Actualiza subgéneros si vienen en la request
+            if ($updateMovieRequest->has('subgenre_ids')) {
+                $movie->subgenres()->sync($updateMovieRequest->validated('subgenre_ids', []));
+            }
+
+            return response()->json(["message" => "Movie updated successfully!", $movie], Response::HTTP_OK);
+        } catch (ValidationException $e) {
+            return response()->json(["errors" => $e->errors()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function destroy(Movie $movie)
+    {
+
+        if (!$movie) {
+            return response()->json(["error" => "Movie not found"], Response::HTTP_NOT_FOUND);
+        }
+
+        $movie->delete();
+        return response()->json(["message" => "Movie deleted successfully!"], Response::HTTP_OK);
     }
 }

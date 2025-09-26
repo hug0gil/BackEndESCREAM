@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use function Termwind\renderUsing;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -47,7 +48,23 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
-    public function getJWTIdentifier() {}
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
 
-    public function getJWTCustomClaims() {}
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class); // user -> pertenece a un plan
+    }
+
+    public function profiles()
+    {
+        return $this->hasMany(Profile::class);
+    }
 }
