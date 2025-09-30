@@ -14,6 +14,7 @@ class HorrorBlockbustersSeeder extends Seeder
 {
     public function run()
     {
+
         // Directores
         $directorsData = [
             ['id' => 1, 'name' => 'John Carpenter', 'birth_date' => '1948-01-16'],
