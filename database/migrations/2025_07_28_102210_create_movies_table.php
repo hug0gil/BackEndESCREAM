@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->integer('year');
+            $table->integer('year')->nullable();
             $table->string('synopsis');
-            $table->string('cover')->nullable();
+            $table->string('image')->nullable();
             $table->integer('rating')->nullable();
             $table->foreignId('director_id')->constrained('directors');
             $table->foreignId('production_company_id')->constrained('production_companies');

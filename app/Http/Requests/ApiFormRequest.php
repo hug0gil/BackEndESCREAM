@@ -22,5 +22,9 @@ class ApiFormRequest extends FormRequest
     lanzas explícitamente una excepción con una respuesta JSON, Laravel no se basa en 
     el header Accept para decidir cómo responder.Porque tú estás forzando que la respuesta 
     sea JSON siempre que falle la validación. 
+
+    Sobrescribimos failedValidation para forzar siempre respuestas JSON,
+    garantizando consistencia en la API, evitando redirecciones y facilitando
+    que frontends o apps móviles manejen los errores de validación de manera uniforme.
     */
 }

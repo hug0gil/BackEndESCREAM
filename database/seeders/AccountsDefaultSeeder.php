@@ -15,31 +15,6 @@ class AccountsDefaultSeeder extends Seeder
      */
     public function run(): void
     {
-        $plansData = [
-            [
-                'id' => 1,
-                'name' => 'Gloomy', // Basic
-                'price' => 6.99,
-                'devices_allowed' => 1,
-            ],
-            [
-                'id' => 2,
-                'name' => 'Sinister', // Essential
-                'price' => 12.99,
-                'devices_allowed' => 2,
-            ],
-            [
-                'id' => 3,
-                'name' => 'Horrifying', // Premium
-                'price' => 15.99,
-                'devices_allowed' => 4,
-            ],
-        ];
-
-        foreach ($plansData as $plan) {
-            Plan::updateOrCreate(['id' => $plan['id']], $plan);
-        }
-
         $profilesData = [
             [
                 'id' => 1,
@@ -103,6 +78,8 @@ class AccountsDefaultSeeder extends Seeder
         foreach ($profilesData as $profile) {
             Profile::updateOrCreate(['id' => $profile['id']], $profile);
         }
+
+        $this->call(HorrorBlockbustersSeeder::class);
 
         $reviewsData = [
             [

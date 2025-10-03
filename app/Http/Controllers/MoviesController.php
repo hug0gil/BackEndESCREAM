@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Movie;
+use App\Models\Plan;
+use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +35,7 @@ class MoviesController extends Controller
                 $movie->subgenres()->sync($createMovieRequest['subgenre_ids']);
             }
 
-            return response()->json(["message" => "Movie created successfully!", "movie" => $movie], Response::HTTP_OK);
+            return response()->json(["message" => "Movie created successfully!", "movie_id" => $movie->id, "movie" => $movie], Response::HTTP_OK);
         } catch (ValidationException $e) {
             return response()->json(["errors" => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
@@ -40,7 +43,6 @@ class MoviesController extends Controller
 
     public function show(Movie $movie)
     {
-
         if (!$movie) {
             return response()->json(["error" => "Movie not found"], Response::HTTP_NOT_FOUND);
         }
@@ -51,8 +53,6 @@ class MoviesController extends Controller
     {
 
         try {
-            $movie->update($updateMovieRequest->validated());
-
             // Actualiza campos de la tabla principal
             $movie->update($updateMovieRequest->validated());
 
@@ -68,18 +68,23 @@ class MoviesController extends Controller
 
             return response()->json(["message" => "Movie updated successfully!", $movie], Response::HTTP_OK);
         } catch (ValidationException $e) {
-            return response()->json(["errors" => $e->errors()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(["errors" => $e->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
     public function destroy(Movie $movie)
     {
-
-        if (!$movie) {
-            return response()->json(["error" => "Movie not found"], Response::HTTP_NOT_FOUND);
+        try {
+            $movie->delete();
+            return response()->json(["message" => "Movie deleted successfully"], Response::HTTP_OK);
+        } catch (QueryException $e) {
+            return response()->json(["error" => "Cannot delete movie due to database constraints"], Response::HTTP_CONFLICT);
         }
+    }
 
-        $movie->delete();
-        return response()->json(["message" => "Movie deleted successfully!"], Response::HTTP_OK);
+    public function getAllPlans()
+    {
+        $plans = Plan::all();
+        return response()->json($plans, Response::HTTP_OK);
     }
 }
