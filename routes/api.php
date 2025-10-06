@@ -9,11 +9,19 @@ Route::get("/test", function () {
     return "El backend funciona correctamente";
 });
 
+Route::prefix('users')->middleware("jwt.auth")->group(function () {
+    Route::get("/who", [AuthController::class, "who"]);
+    Route::post("/logout", [AuthController::class, "logout"]);
+    Route::post("/refresh", [AuthController::class, "refresh"]);
+});
+
+
 Route::prefix('users')->group(function () {
     Route::get("/", [UsersController::class, "index"]);
+    Route::get("/{user}", [UsersController::class, "getUser"]);
     Route::post("/login", [AuthController::class, "logIn"]);
-    Route::post("/register", [UsersController::class, "register"]);
-    Route::put("/update", [UsersController::class, "update"]);
+    Route::post("/register", [AuthController::class, "register"]);
+    Route::put("/update/{user}", [UsersController::class, "update"]);
     Route::delete("/{user}", [UsersController::class, "delete"]);
     Route::get("/plan/{id}", [UsersController::class, "getPlan"]);
 });

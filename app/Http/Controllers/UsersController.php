@@ -2,19 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LogInRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Models\Movie;
 use App\Models\User;
-use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Facades\JWTAuth;
-
-use function Laravel\Prompts\password;
 
 class UsersController extends Controller
 {
@@ -27,18 +20,6 @@ class UsersController extends Controller
         return response()->json($users);
     }
 
-    public function register(RegisterRequest $request)
-    {
-        $validatedUser = $request->validated();
-
-        $user = User::create([
-            "name" => $validatedUser["name"],
-            "email" => $validatedUser["email"],
-            "password" => $validatedUser["password"], //bcrypt($validatedUser["password"])
-        ]);
-
-        return response()->json(["message" => "User created succefully!", $user], Response::HTTP_CREATED);
-    }
 
     public function getPlan(int $id)
     {
@@ -66,12 +47,23 @@ class UsersController extends Controller
     public function delete(User $user)
     {
         try {
-            $user->forceDelete();
+            $user->delete();
             return response()->json(["message" => "User deleted successfully!"], Response::HTTP_OK);
         } catch (QueryException $e) {
             return response()->json(["error" => "Cannot delete user due to database constraints"], Response::HTTP_CONFLICT);
         }
     }
+
+    public function getUser(User $user)
+    {
+        try {
+            return response()->json([$user], Response::HTTP_OK);
+        } catch (QueryException $e) {
+            return response()->json(["error" => "User not found!"], Response::HTTP_CONFLICT);
+        }
+    }
+
+
 
     // Tener en cuenta FK de hijos, poner DELETE CASCADE o no se borrarán
     // $table->foreignId('user_id')->constrained()->cascadeOnDelete();

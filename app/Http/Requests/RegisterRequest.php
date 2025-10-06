@@ -23,6 +23,7 @@ class RegisterRequest extends ApiFormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users', //unico:tabla donde mirar que sea único el valor
             'password' => 'required|string|min:6',
+            'plan_id' => 'required|int|max:3'
         ];
     }
 
@@ -41,6 +42,10 @@ class RegisterRequest extends ApiFormRequest
             'password.required' => 'The password is required.',
             'password.string' => 'The password must be a string.',
             'password.min' => 'The password must be at least 6 characters long.',
+
+            'plan_id.required' => 'The plan id is required.',
+            'plan_id.string' => 'The plan id must be an int.',
+            'plan_id.max' => 'The plan id may not be greater than 3.',
         ];
     }
 }
