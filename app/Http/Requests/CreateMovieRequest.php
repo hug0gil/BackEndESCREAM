@@ -2,34 +2,26 @@
 
 namespace App\Http\Requests;
 
-
 class CreateMovieRequest extends ApiFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
             "title" => ["required", "string", "max:255"],
             "year" => ["required", "integer", "digits:4"],
             "synopsis" => ["required", "string", "max:255"],
-            "cover" => ["nullable", "string", "max:255"],
-            "rating" => ["nullable", "numeric"],
+            "image" => ["nullable", "string", "max:255"], // unificado con la columna de la DB
+            "rating" => ["nullable", "numeric", "between:0,10"],
             "director_id" => ["required", "integer", "exists:directors,id"],
             "production_company_id" => ["required", "integer", "exists:production_companies,id"],
+            "country" => ["required", "string", "size:2"], // ISO 3166-1 alpha-2
 
-            // Aquí las validaciones para arrays auxiliares:
+            // Validaciones para arrays auxiliares:
             "actor_ids" => ["sometimes", "array"],
             "actor_ids.*" => ["integer", "exists:actors,id"],
 
@@ -38,8 +30,7 @@ class CreateMovieRequest extends ApiFormRequest
         ];
     }
 
-
-    public function messages()
+    public function messages(): array
     {
         return [
             'title.required' => 'The title is required.',
@@ -54,8 +45,8 @@ class CreateMovieRequest extends ApiFormRequest
             'synopsis.string' => 'The synopsis must be a string.',
             'synopsis.max' => 'The synopsis may not be greater than 255 characters.',
 
-            'cover.string' => 'The cover path must be a string.',
-            'cover.max' => 'The cover path may not be greater than 255 characters.',
+            'image.string' => 'The image path must be a string.',
+            'image.max' => 'The image path may not be greater than 255 characters.',
 
             'rating.numeric' => 'The rating must be a number.',
             'rating.between' => 'The rating must be between 0 and 10.',
@@ -67,6 +58,10 @@ class CreateMovieRequest extends ApiFormRequest
             'production_company_id.required' => 'The production company is required.',
             'production_company_id.integer' => 'The production company must be a number.',
             'production_company_id.exists' => 'The selected production company does not exist.',
+
+            'country.required' => 'The country is required.',
+            'country.string' => 'The country must be a string.',
+            'country.size' => 'The country must be exactly 2 characters (ISO code).',
 
             'actor_ids.array' => 'Actors must be sent as a list.',
             'actor_ids.*.integer' => 'Each actor must be identified by an integer.',

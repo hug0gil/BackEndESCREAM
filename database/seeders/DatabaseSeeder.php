@@ -41,6 +41,13 @@ class DatabaseSeeder extends Seeder
             Plan::updateOrCreate(['id' => $plan['id']], $plan);
         }
 
+        User::factory()->create([
+            'name' => 'Administrator',
+            'email' => 'admin@escream.com',
+            'password' => 'admin1234',
+            'plan_id' => 1,
+            'role' => 'admin'
+        ]);
 
         User::factory()->create([
             'name' => 'Alice',

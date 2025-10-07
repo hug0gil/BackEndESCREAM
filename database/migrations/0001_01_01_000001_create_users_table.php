@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->dateTime('start_date')->nullable();
+            $table->dateTime('end_date')->nullable();
+            $table->boolean('suscribed')->default(false);
+            $table->string('role')->default('user');
             $table->foreignId('plan_id')->default(1)->constrained('plans');
             $table->rememberToken();
             $table->timestamps();

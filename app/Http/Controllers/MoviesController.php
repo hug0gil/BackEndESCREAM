@@ -6,7 +6,6 @@ use App\Http\Requests\CreateMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Movie;
 use App\Models\Plan;
-use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -14,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MoviesController extends Controller
 {
+
     public function index(Request $request)
     {
         $perPage = $request->query("per_page", 10);

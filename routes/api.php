@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\UsersController;
+use App\Http\Middleware\CheckRole;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
@@ -30,31 +31,11 @@ Route::prefix('users')->group(function () {
 // Poner middleware básico de JWT
 
 Route::get("/movies/plans", [MoviesController::class, "getAllPlans"]);
-Route::apiResource("/movies", MoviesController::class);
+Route::post('/movies', [MoviesController::class, 'store'])
+    ->middleware(CheckRole::class);
 
-
-Route::get("/caratula", function () {
-    $response = Http::get('https://api.themoviedb.org/3/search/movie', [
-        'api_key' => env('TMDB_API_KEY'),
-        'query' => 'Halloween',
-        'year' => 1978
-    ]);
-
-    $data = $response->json();
-
-    // Verificamos que haya resultados
-    if (!empty($data['results'][0]['poster_path'])) {
-        $posterPath = $data['results'][0]['poster_path'];
-
-        // Construimos la URL completa de la imagen
-        $posterUrl = 'https://image.tmdb.org/t/p/w500' . $posterPath;
-
-        // Mostramos la imagen en HTML
-        return "<img src='{$posterUrl}' alt='Carátula de Halloween'>";
-    }
-
-    return "No se encontró carátula";
-});
+Route::apiResource('/movies', MoviesController::class)
+    ->except(['store']);
 
 
 /*

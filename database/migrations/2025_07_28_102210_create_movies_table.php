@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->integer('year')->nullable();
-            $table->string('synopsis');
+            $table->text('synopsis');
             $table->string('image')->nullable();
-            $table->integer('rating')->nullable();
+            $table->decimal('rating', 2, 1)->nullable();
             $table->foreignId('director_id')->constrained('directors');
             $table->foreignId('production_company_id')->constrained('production_companies');
+            $table->string('country');
             $table->softDeletes();
             $table->timestamps();
         });
