@@ -31,11 +31,10 @@ Route::prefix('users')->group(function () {
 // Poner middleware básico de JWT
 
 Route::get("/movies/plans", [MoviesController::class, "getAllPlans"]);
-Route::post('/movies', [MoviesController::class, 'store'])
-    ->middleware(CheckRole::class);
-
-Route::apiResource('/movies', MoviesController::class)
-    ->except(['store']);
+Route::get('/movies', [MoviesController::class, 'index']);
+Route::get('/movies/{movie}', [MoviesController::class, 'show']);
+Route::apiResource('/movies', MoviesController::class)->middleware(CheckRole::class)
+    ->except(['index', 'show']);
 
 
 /*
