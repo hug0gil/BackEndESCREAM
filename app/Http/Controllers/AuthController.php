@@ -6,7 +6,6 @@ use App\Http\Requests\LogInRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Response;
-use Tymon\JWTAuth\Contracts\Providers\JWT;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 

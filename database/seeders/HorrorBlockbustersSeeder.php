@@ -223,7 +223,6 @@ class HorrorBlockbustersSeeder extends Seeder
                 'director_id' => 2,
                 'production_company_id' => 5,
             ],
-            // Nuevas películas añadidas
             [
                 'id' => 11,
                 'title' => 'Get Out',

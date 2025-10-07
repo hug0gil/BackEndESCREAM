@@ -80,6 +80,8 @@ class AccountsDefaultSeeder extends Seeder
         }
 
         $this->call(HorrorBlockbustersSeeder::class);
+        $this->call(MovieImageSeeder::class);
+
 
         $reviewsData = [
             [
