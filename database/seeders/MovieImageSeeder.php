@@ -31,7 +31,5 @@ class MovieImageSeeder extends Seeder
                 $movie->save();
             }
         }
-
-        $this->command->info('Imágenes actualizadas correctamente.');
     }
 }
