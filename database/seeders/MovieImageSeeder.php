@@ -37,7 +37,40 @@ class MovieImageSeeder extends Seeder
                 $this->command->error("Error con la API para {$movie->title}");
             }
 
-            sleep(1);
+            sleep(0.5);
         }
     }
 }
+
+
+/*
+Request para obtener las películas
+
+   $url = 'https://api.themoviedb.org/3/search/movie';
+            $params = [
+                'api_key' => env('TMDB_API_KEY'),
+                'query' => $movie->title,
+                'year' => $movie->year,
+                'language' => 'es-ES'
+            ];
+
+            $responseAPI = $url . '?' . http_build_query($params);
+
+            $response = Http::get($responseAPI);
+            $this->command->info("URL de petición: {$responseAPI}");
+
+
+Request para obtener imagen (wSize)
+
+https://image.tmdb.org/t/p/w500
+
+
+A la hora de autenticarnos para la API
+
+| Tipo             | Qué es                            | Uso típico                                                                                                                                            |
+| ---------------- | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **API Key**      | Clave pública                     | Identifica tu aplicación o proyecto a la API. Se usa para acceder a datos públicos (ej. buscar películas). No está ligada a un usuario.               |
+| **Bearer Token** | Token privado / de acceso usuario | Representa a un usuario autenticado. Se usa para acceder a datos privados o hacer cambios en nombre del usuario (ej. crear listas, marcar favoritos). |
+
+
+*/
