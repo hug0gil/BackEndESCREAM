@@ -15,21 +15,29 @@ class MovieImageSeeder extends Seeder
     public function run(): void
     {
         $movies = Movie::all();
-
         foreach ($movies as $movie) {
-
             $response = Http::get('https://api.themoviedb.org/3/search/movie', [
                 'api_key' => env('TMDB_API_KEY'),
                 'query' => $movie->title,
-                'year' => $movie->year
+                'year' => $movie->year,
+                'language' => 'es-ES'
             ]);
 
-            $data = $response->json();
+            if ($response->successful()) {
+                $data = $response->json();
 
-            if (!empty($data['results'][0]['poster_path'])) {
-                $movie->image = 'https://image.tmdb.org/t/p/w500' . $data['results'][0]['poster_path'];
-                $movie->save();
+                if (!empty($data['results'][0]['poster_path'])) {
+                    $movie->image = 'https://image.tmdb.org/t/p/w500' . $data['results'][0]['poster_path'];
+                    $movie->save();
+                    $this->command->info("Guardada imagen para {$movie->title}");
+                } else {
+                    $this->command->warn("No se encontró imagen para {$movie->title}");
+                }
+            } else {
+                $this->command->error("Error con la API para {$movie->title}");
             }
+
+            sleep(1);
         }
     }
 }
