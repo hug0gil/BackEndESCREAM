@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Administrator;
 use App\Models\Plan;
+use App\Models\Review;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -45,8 +47,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Administrator',
             'email' => 'admin@escream.com',
             'password' => 'admin1234',
-            'plan_id' => 1,
-            'role' => 'admin'
+            'admin_level' => 3
         ]);
 
         User::factory()->create([

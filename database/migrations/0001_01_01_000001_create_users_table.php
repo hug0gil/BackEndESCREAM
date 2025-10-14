@@ -20,7 +20,7 @@ return new class extends Migration
             $table->dateTime('start_date')->nullable();
             $table->dateTime('end_date')->nullable();
             $table->boolean('suscribed')->default(false);
-            $table->string('role')->default('user');
+            $table->integer('admin_level')->default(0); // Si tiene nivel 0 es un User y si es mayor es Admin, cuanto más alto más nivel de administración
             $table->foreignId('plan_id')->default(1)->constrained('plans');
             $table->rememberToken();
             $table->timestamps();

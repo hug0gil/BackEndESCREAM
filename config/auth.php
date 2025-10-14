@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'api',
+        'guard' => 'apiUsers',
         'passwords' => 'users',
     ],
 
@@ -40,9 +40,13 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'api' => [
+        'apiUsers' => [
             'driver' => 'jwt',
             'provider' => 'users',
+        ],
+        'apiAdmin' => [
+            'driver' => 'jwt',
+            'provider' => 'administrators',
         ],
     ],
 
@@ -66,7 +70,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => App\Models\User::class,
+        ],
+
+        'administrators' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Administrator::class,
         ],
 
         // 'users' => [
@@ -74,6 +83,11 @@ return [
         //     'table' => 'users',
         // ],
     ],
+
+    /*
+    Provider: dice “qué modelo usar para buscar un usuario”. Ejemplo: users → App\Models\User.
+    Guard: dice “cómo autenticar al usuario”, y está ligado a un provider. Ejemplo: apiUsers → JWT usando users.
+    */
 
     /*
     |--------------------------------------------------------------------------

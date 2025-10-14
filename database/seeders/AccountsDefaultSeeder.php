@@ -80,38 +80,5 @@ class AccountsDefaultSeeder extends Seeder
         }
 
         $this->call(HorrorBlockbustersSeeder::class);
-        $this->call(MovieImageSeeder::class);
-
-
-        $reviewsData = [
-            [
-                'id' => 1,
-                'user_id' => 1,
-                'movie_id' => 1,
-                'rating' => 5,
-                'comment' => 'Amazing movie! A must-watch.',
-                'date' => '2017-10-01',
-            ],
-            [
-                'id' => 2,
-                'user_id' => 2,
-                'movie_id' => 2,
-                'rating' => 4,
-                'comment' => 'Great storyline and characters.',
-                'date' => '2023-10-02',
-            ],
-            [
-                'id' => 3,
-                'user_id' => 1,
-                'movie_id' => 3,
-                'rating' => 3,
-                'comment' => null,
-                'date' => '2025-10-03',
-            ],
-        ];
-
-        foreach ($reviewsData as $review) {
-            Review::updateOrCreate(['id' => $review['id']], $review);
-        }
     }
 }

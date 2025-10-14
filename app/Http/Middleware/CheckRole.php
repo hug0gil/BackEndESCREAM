@@ -19,14 +19,18 @@ class CheckRole
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
+
+            if (!$user) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+
+            if ($user->admin_level == 0) {
+                return response()->json(['error' => 'Forbidden: insufficient permissions'], 403);
+            }
         } catch (JWTException $e) {
             return response()->json(['error' => 'Token invalid or missing'], 401);
         }
 
-        if (!$user || $user->role != "admin")
-            return response()->json(['error' => 'Forbidden: insufficient permissions'], 403);
-
-
-        return $next($request);
+        return $next($request); // El middleware le dice a Laravel que continúe procesando la petición y pase al siguiente middleware/controller
     }
 }

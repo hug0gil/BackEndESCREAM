@@ -45,3 +45,5 @@ GET	            /movies/{movie}	    show	                   Mostrar un recurso
 PUT/PATCH	    /movies/{movie}	    update	                   Actualizar un recurso
 DELETE	        /movies/{movie}	    destroy	                   Eliminar un recurso
 */
+
+// Introducir endpoints para administradores, creando AuthAdminController
