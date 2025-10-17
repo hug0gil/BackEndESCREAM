@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LogInRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Dotenv\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Http\Request;
+
 
 class AuthController extends Controller
 {
@@ -83,5 +86,34 @@ class AuthController extends Controller
     {
         $user = JWTAuth::user();
         return response()->json($user);
+    }
+
+    public function changeSubscription(Request $request)
+    {
+        $user = JWTAuth::user();
+
+        //$request->headers->set('Accept', 'application/json'); //Obligar al sistema que me devuelva un JSON
+
+        $validatedData = $request->validate([
+            'plan_id' => 'required|integer|in:1,2,3',
+        ], [
+            'plan_id.required' => 'The plan id is required.',
+            'plan_id.integer' => 'The plan id must be an integer.',
+            'plan_id.in' => 'The selected plan id is invalid. It must be 1, 2 or 3.',
+        ]);
+
+        try {
+            $user->update($validatedData);
+
+            return response()->json([
+                'message' => 'Subscription updated successfully.',
+                'user' => $user
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to update subscription.',
+                'details' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

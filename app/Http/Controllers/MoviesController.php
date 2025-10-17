@@ -87,4 +87,9 @@ class MoviesController extends Controller
         $plans = Plan::all();
         return response()->json($plans, Response::HTTP_OK);
     }
+
+    public function getImage(Movie $movie)
+    {
+        return redirect()->away($movie->image);
+    }
 }

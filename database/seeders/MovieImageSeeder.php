@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Movie;
-use App\Models\Review;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Http;
 
@@ -21,7 +19,7 @@ class MovieImageSeeder extends Seeder
                 'api_key' => env('TMDB_API_KEY'),
                 'query' => $movie->title,
                 'year' => $movie->year,
-                'language' => 'es-ES'
+                //'language' => 'es-ES'
             ]);
 
             if ($response->successful()) {

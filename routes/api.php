@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MoviesController;
+use App\Http\Controllers\SubGenresController;
 use App\Http\Controllers\UsersController;
 use App\Http\Middleware\CheckRole;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/test", function () {
@@ -15,6 +16,7 @@ Route::prefix('users')->middleware("jwt.auth")->group(function () {
     Route::get("/who", [AuthController::class, "who"]);
     Route::post("/logout", [AuthController::class, "logout"]);
     Route::post("/refresh", [AuthController::class, "refresh"]);
+    Route::put("/changeSubscription", [AuthController::class, "changeSubscription"]);
 });
 
 
@@ -28,13 +30,25 @@ Route::prefix('users')->group(function () {
     Route::get("/plan/{id}", [UsersController::class, "getPlan"]);
 });
 
+Route::prefix('admin')->middleware(CheckRole::class)->group(function () {
+    Route::post('/register', [AdminAuthController::class, 'register']);
+});
+
+
+Route::prefix('/movies/genres')->group(function (): void {
+    Route::get("/", [SubGenresController::class, "index"]);
+});
 // Poner middleware básico de JWT
 
 Route::get("/movies/plans", [MoviesController::class, "getAllPlans"]);
 Route::get('/movies', [MoviesController::class, 'index']);
 Route::get('/movies/{movie}', [MoviesController::class, 'show']);
-Route::apiResource('/movies', MoviesController::class)->middleware(CheckRole::class)
-    ->except(['index', 'show']);
+Route::get('/movies/getImage/{movie}', [MoviesController::class, 'getImage']);
+Route::apiResource('/movies', MoviesController::class)->except(['index', 'show'])->middleware(CheckRole::class);
+
+
+
+
 
 
 /*

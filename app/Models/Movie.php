@@ -9,7 +9,7 @@ class Movie extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['title', 'year', 'synopsis', 'cover', 'rating', 'director_id', 'production_company_id', 'country'];
+    protected $fillable = ['title', 'year', 'synopsis', 'image', 'rating', 'director_id', 'production_company_id', 'country'];
 
     protected $hidden = [
         "created_at",

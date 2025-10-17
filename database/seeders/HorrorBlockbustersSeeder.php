@@ -247,7 +247,7 @@ class HorrorBlockbustersSeeder extends Seeder
                 'user_id' => 1,
                 'movie_id' => 1,
                 'rating' => 5,
-                'comment' => 'Amazing movie! A must-watch.',
+                'comment' => '¡Película increíble! Imprescindible verla.',
                 'date' => '2017-10-01',
             ],
             [
@@ -255,7 +255,7 @@ class HorrorBlockbustersSeeder extends Seeder
                 'user_id' => 2,
                 'movie_id' => 2,
                 'rating' => 4,
-                'comment' => 'Great storyline and characters.',
+                'comment' => 'Gran historia y personajes.',
                 'date' => '2023-10-02',
             ],
             [
