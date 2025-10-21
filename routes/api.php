@@ -6,45 +6,50 @@ use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\SubGenresController;
 use App\Http\Controllers\UsersController;
 use App\Http\Middleware\CheckRole;
+use App\Http\Middleware\LogRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/test", function () {
     return "El backend funciona correctamente";
 });
 
-Route::prefix('users')->middleware("jwt.auth")->group(function () {
-    Route::get("/who", [AuthController::class, "who"]);
-    Route::post("/logout", [AuthController::class, "logout"]);
-    Route::post("/refresh", [AuthController::class, "refresh"]);
-    Route::put("/changeSubscription", [AuthController::class, "changeSubscription"]);
-});
-
-
 Route::prefix('users')->group(function () {
-    Route::get("/", [UsersController::class, "index"]);
-    Route::get("/{user}", [UsersController::class, "getUser"]);
-    Route::post("/login", [AuthController::class, "logIn"]);
-    Route::post("/register", [AuthController::class, "register"]);
-    Route::put("/update/{user}", [UsersController::class, "update"]);
-    Route::delete("/{user}", [UsersController::class, "delete"]);
-    Route::get("/plan/{id}", [UsersController::class, "getPlan"]);
+    Route::middleware(["jwt.auth", LogRequests::class])->group(function () {
+        Route::post("logout", [AuthController::class, "logout"]);
+        Route::post("refresh", [AuthController::class, "refresh"]);
+        Route::put("changeSubscription", [AuthController::class, "changeSubscription"]);
+        Route::get("who", [AuthController::class, "who"]);
+    });
+
+    Route::middleware(LogRequests::class)->group(function () {
+        Route::post("login", [AuthController::class, "logIn"]);
+        Route::post("register", [AuthController::class, "register"]);
+        Route::put("update/{user}", [UsersController::class, "update"]);
+        Route::delete("{user}", [UsersController::class, "delete"]);
+    });
+
+    Route::get("", [UsersController::class, "index"]);
+    Route::get("{user}", [UsersController::class, "getUser"]);
+    Route::get("plan/{id}", [UsersController::class, "getPlan"]);
 });
 
-Route::prefix('admin')->middleware(CheckRole::class)->group(function () {
-    Route::post('/register', [AdminAuthController::class, 'register']);
+//Poner las rutas que obtienen parámetros al final para que no corten rutas
+
+
+Route::prefix('admin')->middleware([LogRequests::class, CheckRole::class])->group(function () {
+    Route::post('register', [AdminAuthController::class, 'register']);
 });
 
 
 Route::prefix('/movies/genres')->group(function (): void {
-    Route::get("/", [SubGenresController::class, "index"]);
+    Route::get("", [SubGenresController::class, "index"]);
 });
-// Poner middleware básico de JWT
 
 Route::get("/movies/plans", [MoviesController::class, "getAllPlans"]);
 Route::get('/movies', [MoviesController::class, 'index']);
 Route::get('/movies/{movie}', [MoviesController::class, 'show']);
 Route::get('/movies/getImage/{movie}', [MoviesController::class, 'getImage']);
-Route::apiResource('/movies', MoviesController::class)->except(['index', 'show'])->middleware(CheckRole::class);
+Route::apiResource('/movies', MoviesController::class)->except(['index', 'show'])->middleware([LogRequests::class, CheckRole::class]);
 
 
 

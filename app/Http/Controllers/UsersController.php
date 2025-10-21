@@ -6,6 +6,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -37,6 +38,7 @@ class UsersController extends Controller
     {
         try {
             $user->update($request->validated()); // A user le actualizo los campos que pasan la validación
+            Log::notice("User updated account", ['user_id' => $user->id]);
 
             return response()->json(["message" => "User updated successfully!", $user], Response::HTTP_OK);
         } catch (ValidationException $e) {

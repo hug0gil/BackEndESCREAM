@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LogInRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Dotenv\Exception\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -91,10 +92,9 @@ class AuthController extends Controller
     public function changeSubscription(Request $request)
     {
         $user = JWTAuth::user();
+        $request->headers->set('Accept', 'application/json');
 
-        //$request->headers->set('Accept', 'application/json'); //Obligar al sistema que me devuelva un JSON
-
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'plan_id' => 'required|integer|in:1,2,3',
         ], [
             'plan_id.required' => 'The plan id is required.',
@@ -102,18 +102,36 @@ class AuthController extends Controller
             'plan_id.in' => 'The selected plan id is invalid. It must be 1, 2 or 3.',
         ]);
 
+        if ($validator->fails()) {
+            Log::warning("Failed subscription validation", [
+                'user_id' => $user->id,
+                'errors' => $validator->errors(),
+                'payload' => $request->all()
+            ]);
+
+            return response()->json([
+                'error' => 'Invalid plan_id.',
+                'details' => $validator->errors()
+            ], 422);
+        }
+
         try {
-            $user->update($validatedData);
+            $user->update($validator->validated());
 
             return response()->json([
                 'message' => 'Subscription updated successfully.',
                 'user' => $user
-            ], Response::HTTP_OK);
+            ], 200);
         } catch (\Exception $e) {
+            Log::error("Failed to update subscription", [
+                'user_id' => $user->id,
+                'error' => $e->getMessage()
+            ]);
+
             return response()->json([
                 'error' => 'Failed to update subscription.',
                 'details' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            ], 500);
         }
     }
 }
