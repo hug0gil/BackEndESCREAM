@@ -17,12 +17,20 @@ class LogRequests
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
+
+        $headers = $request->headers->all();
+        unset($headers['authorization'], $headers['cookie']);
+        /* 
+        quitar datos sensibles, "authorization" contiene el token JWT 
+        y "cookie" puede contener session ID, tokens CSRF, o cookies de autenticación.
+        */
+
         $data = [
             'url' => $request->fullUrl(),
             'ip' => $request->ip(),
             'method' => $request->method(),
-            'headers' => $request->headers->all(),
-            'body' => $request->getContent(),
+            'headers' => $headers,
+            'body' => $request->except(['password']), // Nunca mostramos la contraseña
             'status' => $response->getStatusCode()
         ];
 

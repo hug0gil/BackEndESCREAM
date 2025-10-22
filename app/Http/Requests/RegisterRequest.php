@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
 class RegisterRequest extends ApiFormRequest
 {
@@ -53,5 +56,26 @@ class RegisterRequest extends ApiFormRequest
             'admin_level.integer' => 'The admin level must be an integer.',
             'admin_level.in' => 'The admin level must be 1, 2, or 3.',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        // Log de validación fallida
+        Log::error('Validation failed for user registration', [
+            'errors' => $validator->errors()->toArray(), // Metemos en el log TODOS los errores
+            'input' => $this->except(['password', 'password_confirmation', 'token']),
+            'ip' => $this->ip(),
+        ]);
+
+        /* 
+        Lanza la excepción para que Laravel devuelva la respuesta JSON 422 IMPORTANTE,
+        si no seguirá su flujo como si fuera válido
+
+        Se utiliza cuando la solicitud es sintácticamente correcta (por eso no sería un 400 Bad Request), 
+        pero el servidor no puede procesarla debido a errores de validación de datos o lógica de negocio.
+        */
+        throw new HttpResponseException(response()->json([
+            'errors' => $validator->errors(),
+        ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

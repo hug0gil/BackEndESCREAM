@@ -21,53 +21,110 @@ class AuthController extends Controller
 
         $credentials = ['email' => $validatedData["email"], 'password' => $validatedData["password"]];
 
-        $userExist = User::where('email', ['email' => $validatedData["email"]])->firstOrFail();
+        $userExist = User::where('email', $validatedData["email"])->first();
 
-        if (!$userExist)
+        if (!$userExist) {
+            Log::error("User doesn't exist", ['email' => $validatedData["email"], 'ip' => $request->ip()]);
             return response()->json(['error' => 'User doesn´t exist'], Response::HTTP_UNAUTHORIZED);
-
+        }
         try {
             if (!$token = JWTAuth::attempt($credentials)) {
+                Log::error("Email or password incorrect", [
+                    'user_id' => $userExist->id,
+                    'email' => $validatedData["email"],
+                    'ip' => $request->ip()
+                ]);
                 return response()->json(['error' => 'Email or password incorrect'], Response::HTTP_UNAUTHORIZED);
             }
             return response()->json(['token' => $token], Response::HTTP_OK);
-        } catch (JWTException) {
+        } catch (JWTException $e) {
+            Log::error("Token generation failed", [
+                'user_id' => $userExist->id,
+                'email' => $validatedData["email"],
+                'error' => $e->getMessage(),
+                'ip' => $request->ip()
+            ]);
             return response()->json(['error' => 'Token generation failed'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+    //Introducimos en los logs email y la dirección IP para ubicar el intento y saber con que correo se intento el inicio
 
     public function register(RegisterRequest $request)
     {
         $validatedUser = $request->validated();
 
-        $user = User::create([
-            "name" => $validatedUser["name"],
-            "email" => $validatedUser["email"],
-            "password" => $validatedUser["password"], //bcrypt($validatedUser["password"])
-            "plan_id" => $validatedUser["plan_id"]
-        ]);
+        try {
+            $user = User::create([
+                "name" => $validatedUser["name"],
+                "email" => $validatedUser["email"],
+                "password" => $validatedUser["password"], //bcrypt($validatedUser["password"])
+                "plan_id" => $validatedUser["plan_id"]
+            ]);
+        } catch (\Exception $e) {
+            Log::error("Failed to register user", [
+                'email' => $validatedUser['email'],
+                'error' => $e->getMessage()
+            ]);
+            return response()->json(['error' => 'User registration failed'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         return response()->json(["message" => "User created succefully!", "userData" => $user], Response::HTTP_CREATED);
     }
+
+    /* 
+    Controlamos con log y trycatch por si a la hora de hacer la creación fallara, pero aparte en RegisterRequest creamos el método 
+    "failedValidation" que es un método protegido que forma parte de los FormRequests, Laravel llama automáticamente a este método 
+    cuando la validación de la request falla.
+    */
 
     public function logOut()
     {
         try {
             $token = JWTAuth::getToken();
+
+            if (!$token) {
+                Log::error("Failed to logout user", [
+                    'error' => 'Token not provided',
+                    'user_id' => null,
+                ]);
+                return response()->json(['error' => 'Token not provided'], Response::HTTP_BAD_REQUEST);
+            }
+
+            $user = JWTAuth::user();
+
             JWTAuth::invalidate($token);
+
             return response()->json(['message' => 'Logout successfully!'], Response::HTTP_OK);
         } catch (JWTException $e) {
-            return response()->json(['error' => 'Unable to log out, the token is invalid'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            Log::error("Failed to logout user", [
+                'error' => $e->getMessage(),
+                'user_id' => isset($user) && $user ? $user->id : null,
+            ]);
+
+            return response()->json(['error' => 'Unable to log out, the token may be invalid or expired'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
 
     public function refresh()
     {
         try {
             $token = JWTAuth::getToken();
+
+            if (!$token) {
+                Log::error("No token provided for refresh", ['ip' => request()->ip()]);
+                return response()->json(['error' => 'Token not provided'], Response::HTTP_BAD_REQUEST);
+            }
+
             $newToken = JWTAuth::refresh($token);
             return $this->respondWithToken($newToken);
         } catch (JWTException $e) {
+            Log::error("Failed to refresh token", [
+                'error' => $e->getMessage(),
+                // No incluimos el token completo por seguridad
+                'token_present' => isset($token),
+                'ip' => request()->ip(),
+            ]);
             return response()->json(['error' => 'Unable to refresh token'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

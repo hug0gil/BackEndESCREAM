@@ -66,7 +66,6 @@ class UsersController extends Controller
     }
 
 
-
     // Tener en cuenta FK de hijos, poner DELETE CASCADE o no se borrarán
     // $table->foreignId('user_id')->constrained()->cascadeOnDelete();
 

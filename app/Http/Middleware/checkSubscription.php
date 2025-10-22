@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class checkSubscription
+class CheckSubscription
 {
     /**
      * Handle an incoming request.
