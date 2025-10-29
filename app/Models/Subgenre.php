@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Subgenre extends Model
 {
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'slug'];
 
     protected $hidden = [
         "created_at",

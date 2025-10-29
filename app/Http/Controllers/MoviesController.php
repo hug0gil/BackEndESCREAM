@@ -6,8 +6,10 @@ use App\Http\Requests\CreateMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Movie;
 use App\Models\Plan;
+use App\Models\Subgenre;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,31 +24,11 @@ class MoviesController extends Controller
         return response()->json($movies);
     }
 
-    public function store(CreateMovieRequest $createMovieRequest)
-    {
-        try {
-            $movie = Movie::create($createMovieRequest->validated());
-
-            if (isset($createMovieRequest['actor_ids'])) {
-                $movie->actors()->sync($createMovieRequest['actor_ids']);
-            }
-
-            if (isset($createMovieRequest['subgenre_ids'])) {
-                $movie->subgenres()->sync($createMovieRequest['subgenre_ids']);
-            }
-
-            return response()->json(["message" => "Movie created successfully!", "movie_id" => $movie->id, "movie" => $movie], Response::HTTP_OK);
-        } catch (ValidationException $e) {
-            return response()->json(["errors" => $e->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-    }
-
     public function show(Movie $movie)
     {
-        if (!$movie) {
-            return response()->json(["error" => "Movie not found"], Response::HTTP_NOT_FOUND);
-        }
-        return response()->json([$movie], Response::HTTP_OK);
+        // Cargamos las relaciones para obtener datos importantes y relacionados con la movie
+        $movie->load(['actors', 'director', 'productionCompany', 'subgenres']);
+        return response()->json(["movieData" => $movie], Response::HTTP_OK);
     }
 
     public function update(UpdateMovieRequest $updateMovieRequest, Movie $movie)
@@ -78,6 +60,12 @@ class MoviesController extends Controller
             $movie->delete();
             return response()->json(["message" => "Movie deleted successfully"], Response::HTTP_OK);
         } catch (QueryException $e) {
+            Log::error('Failed to delete movie', [
+                'movie_id' => $movie->id,
+                'error_message' => $e->getMessage(),
+                'error_code' => $e->getCode()
+            ]);
+
             return response()->json(["error" => "Cannot delete movie due to database constraints"], Response::HTTP_CONFLICT);
         }
     }
@@ -91,5 +79,22 @@ class MoviesController extends Controller
     public function getImage(Movie $movie)
     {
         return redirect()->away($movie->image);
+    }
+
+    public function getMoviePerSubgenre(string $slug)
+    {
+        $subgenre = Subgenre::where('slug', $slug)->first();
+
+        if (!$subgenre) {
+            return response()->json(['message' => 'Subgenre not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $movies = $subgenre->movies()->with(['actors', 'director', 'productionCompany', 'subgenres'])->get();
+        /*
+        $subgenre->movies() = movies del subgenero
+        with($campos) = traemos los datos importantes de las peliculas
+        */
+
+        return response()->json($movies, Response::HTTP_OK);
     }
 }

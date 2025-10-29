@@ -41,17 +41,18 @@ Route::prefix('admin')->middleware([LogRequests::class, CheckRole::class])->grou
 });
 
 
-Route::prefix('/movies/genres')->group(function (): void {
+Route::prefix('/movies/subgenres')->group(function (): void {
     Route::get("", [SubGenresController::class, "index"]);
 });
 
 Route::get("/movies/plans", [MoviesController::class, "getAllPlans"]);
 Route::get('/movies', [MoviesController::class, 'index']);
 Route::get('/movies/{movie}', [MoviesController::class, 'show']);
+Route::get('/movies/subgenre/{subgenreSlug}', [MoviesController::class, 'getMoviePerSubgenre']);
 Route::get('/movies/getImage/{movie}', [MoviesController::class, 'getImage']);
-Route::apiResource('/movies', MoviesController::class)->except(['index', 'show'])->middleware([LogRequests::class, CheckRole::class]);
+Route::apiResource('/movies', MoviesController::class)->except(['index', 'show'])->middleware([LogRequests::class]);
 
-
+//, CheckRole::class
 
 
 

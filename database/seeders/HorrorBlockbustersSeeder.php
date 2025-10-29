@@ -10,6 +10,7 @@ use App\Models\Subgenre;
 use App\Models\Movie;
 use App\Models\Review;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class HorrorBlockbustersSeeder extends Seeder
 {
@@ -119,7 +120,7 @@ class HorrorBlockbustersSeeder extends Seeder
         ];
 
         foreach ($subgenresData as $sub) {
-            Subgenre::updateOrCreate(['id' => $sub['id']], $sub);
+            Subgenre::updateOrCreate(['id' => $sub['id'], 'slug' => Str::slug($sub['name'])], $sub);
         }
 
         // Películas
