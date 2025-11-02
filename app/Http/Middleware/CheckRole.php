@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
@@ -30,6 +31,10 @@ class CheckRole
 
         // Verificar permisos de admin
         if ($user->admin_level == 0) {
+            Log::error('Insufficient permissions: user attempted an admin-only action', [
+                'user_id' => $user->id,
+                'message' => 'The user tried to perform an administrator action'
+            ]);
             return response()->json(['error' => 'Forbidden: insufficient permissions'], 403);
         }
 

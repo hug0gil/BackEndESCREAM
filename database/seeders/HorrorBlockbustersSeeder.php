@@ -76,7 +76,7 @@ class HorrorBlockbustersSeeder extends Seeder
             ['id' => 5, 'name' => 'Neve Campbell', 'birth_date' => '1973-10-03', 'country' => 'EE.UU.'],
             ['id' => 6, 'name' => 'Linda Blair', 'birth_date' => '1959-01-22', 'country' => 'EE.UU.'],
             ['id' => 7, 'name' => 'Ethan Hawke', 'birth_date' => '1970-11-06', 'country' => 'EE.UU.'],
-            ['id' => 8, 'name' => 'Florence Pugh', 'birth_date' => '1996-01-03', 'country' => 'Reino Unido'],
+            ['id' => 8, 'name' => 'Maika Monroe', 'birth_date' => '1993-05-29', 'country' => 'EE.UU.'],
             ['id' => 9, 'name' => 'Anya Taylor-Joy', 'birth_date' => '1996-04-16', 'country' => 'EE.UU.'],
             ['id' => 10, 'name' => 'Kara Hayward', 'birth_date' => '1998-01-17', 'country' => 'EE.UU.'],
             ['id' => 11, 'name' => 'Daniel Kaluuya', 'birth_date' => '1989-02-24', 'country' => 'Reino Unido'],
@@ -100,27 +100,33 @@ class HorrorBlockbustersSeeder extends Seeder
             Actor::updateOrCreate(['id' => $act['id']], $act);
         }
 
-        // Subgéneros
         $subgenresData = [
-            ['id' => 1, 'name' => 'Slasher'],
-            ['id' => 2, 'name' => 'Sobrenatural'],
-            ['id' => 3, 'name' => 'Terror psicológico'],
-            ['id' => 4, 'name' => 'Terror corporal'],
-            ['id' => 5, 'name' => 'Fantasía oscura'],
-            ['id' => 6, 'name' => 'Found footage'],
-            ['id' => 7, 'name' => 'Terror folk'],
-            ['id' => 8, 'name' => 'Terror doméstico'],
-            ['id' => 9, 'name' => 'Terror social'],
-            ['id' => 10, 'name' => 'Zombies'],
-            ['id' => 11, 'name' => 'Posesión'],
-            ['id' => 12, 'name' => 'Giallo'],
-            ['id' => 13, 'name' => 'Terror de venganza'],
-            ['id' => 14, 'name' => 'Terror cósmico'],
-            ['id' => 15, 'name' => 'Terror de aislamiento'],
+            ['id' => 1, 'name' => 'Slasher', 'description' => 'Asesino que persigue y mata a sus víctimas de manera violenta'],
+            ['id' => 2, 'name' => 'Sobrenatural', 'description' => 'Presencias fantasmales o fenómenos paranormales'],
+            ['id' => 3, 'name' => 'Terror psicológico', 'description' => 'Miedo generado por la mente, paranoia o ansiedad'],
+            ['id' => 4, 'name' => 'Terror corporal', 'description' => 'Miedo a la mutación, enfermedad o invasión del cuerpo humano'],
+            ['id' => 5, 'name' => 'Fantasía oscura', 'description' => 'Historias fantásticas con elementos oscuros y macabros'],
+            ['id' => 6, 'name' => 'Found footage', 'description' => 'Historias contadas mediante material grabado por los propios personajes'],
+            ['id' => 7, 'name' => 'Terror folk', 'description' => 'Basado en leyendas, tradiciones y mitos locales'],
+            ['id' => 8, 'name' => 'Terror doméstico', 'description' => 'El horror ocurre en ambientes familiares o cotidianos'],
+            ['id' => 9, 'name' => 'Terror social', 'description' => 'Crítica social a través del miedo y la opresión'],
+            ['id' => 10, 'name' => 'Zombies', 'description' => 'Historias con muertos vivientes o apocalipsis zombi'],
+            ['id' => 11, 'name' => 'Posesión', 'description' => 'Control de una persona por fuerzas sobrenaturales'],
+            ['id' => 12, 'name' => 'Cultos y sectas', 'description' => 'Amenaza de rituales oscuros y fanatismo religioso'],
+            ['id' => 13, 'name' => 'Terror de venganza', 'description' => 'Historias donde la venganza genera miedo y violencia'],
+            ['id' => 14, 'name' => 'Terror cósmico', 'description' => 'Miedo a lo desconocido y entidades incomprensibles'],
+            ['id' => 15, 'name' => 'Terror de aislamiento', 'description' => 'Miedo derivado de estar solo o atrapado'],
         ];
 
         foreach ($subgenresData as $sub) {
-            Subgenre::updateOrCreate(['id' => $sub['id'], 'slug' => Str::slug($sub['name'])], $sub);
+            Subgenre::updateOrCreate(
+                ['id' => $sub['id']],
+                [
+                    'name' => $sub['name'],
+                    'description' => $sub['description'],
+                    'slug' => Str::slug($sub['name']),
+                ]
+            );
         }
 
         // Películas
@@ -134,7 +140,7 @@ class HorrorBlockbustersSeeder extends Seeder
             ['id' => 7, 'title' => 'Hereditary', 'year' => 2018, 'synopsis' => 'Después de la muerte de la matriarca, una familia comienza a descubrir secretos oscuros y eventos terroríficos se desatan.', 'image' => 'hereditary.jpg', 'rating' => 8, 'director_id' => 7, 'production_company_id' => 7, 'country' => 'US'],
             ['id' => 8, 'title' => 'Midsommar', 'year' => 2019, 'synopsis' => 'Un grupo de amigos viaja a Suecia para un festival que ocurre una vez cada 90 años y descubren horrores inimaginables.', 'image' => 'midsommar.jpg', 'rating' => 8, 'director_id' => 7, 'production_company_id' => 7, 'country' => 'SE'],
             ['id' => 9, 'title' => 'La bruja', 'year' => 2015, 'synopsis' => 'Una familia puritana en Nueva Inglaterra sufre la influencia de fuerzas malignas tras ser expulsada de su comunidad.', 'image' => 'la_bruja.jpg', 'rating' => 8, 'director_id' => 8, 'production_company_id' => 7, 'country' => 'US'],
-            ['id' => 10, 'title' => 'Scream 2', 'year' => 1997, 'synopsis' => 'La historia continúa con nuevos asesinatos que afectan a los sobrevivientes del primer ataque.', 'image' => 'scream2.jpg', 'rating' => 7, 'director_id' => 2, 'production_company_id' => 5, 'country' => 'US'],
+            ['id' => 10, 'title' => 'It Follows', 'year' => 2014, 'synopsis' => 'Una joven es perseguida por una entidad sobrenatural tras un encuentro sexual, enfrentando un miedo constante e ineludible.', 'image' => 'it_follows.jpg', 'rating' => 7, 'director_id' => 7, 'production_company_id' => 7, 'country' => 'US'],
             ['id' => 11, 'title' => 'Get Out', 'year' => 2017, 'synopsis' => 'Un joven afroamericano visita la finca de la familia de su novia blanca y descubre secretos perturbadores.', 'image' => 'get_out.jpg', 'rating' => 8, 'director_id' => 9, 'production_company_id' => 3, 'country' => 'US'],
             ['id' => 12, 'title' => 'Us', 'year' => 2019, 'synopsis' => 'Una familia se enfrenta a sus doppelgängers terroríficos durante unas vacaciones.', 'image' => 'us.jpg', 'rating' => 7, 'director_id' => 9, 'production_company_id' => 10, 'country' => 'US'],
             ['id' => 13, 'title' => 'El resplandor', 'year' => 1980, 'synopsis' => 'Un escritor acepta un trabajo como cuidador de invierno en un hotel aislado donde gradualmente pierde la cordura.', 'image' => 'el_resplandor.jpg', 'rating' => 9, 'director_id' => 11, 'production_company_id' => 9, 'country' => 'US'],
@@ -149,7 +155,7 @@ class HorrorBlockbustersSeeder extends Seeder
             ['id' => 22, 'title' => 'It', 'year' => 2017, 'synopsis' => 'Un grupo de niños marginados debe enfrentarse a sus peores miedos cuando se encuentran con un payaso asesino.', 'image' => 'it_2017.jpg', 'rating' => 7, 'director_id' => 16, 'production_company_id' => 9, 'country' => 'US'],
             ['id' => 23, 'title' => 'El hombre invisible', 'year' => 2020, 'synopsis' => 'Una mujer cree que su ex abusivo ha encontrado una manera de volverse invisible para aterrorizarla.', 'image' => 'hombre_invisible.jpg', 'rating' => 7, 'director_id' => 3, 'production_company_id' => 10, 'country' => 'US'],
             ['id' => 24, 'title' => 'El faro', 'year' => 2019, 'synopsis' => 'Dos fareros quedan varados en una isla remota y comienzan a perder la cordura.', 'image' => 'el_faro.jpg', 'rating' => 8, 'director_id' => 8, 'production_company_id' => 7, 'country' => 'US'],
-            ['id' => 25, 'title' => 'Conjuring 2', 'year' => 2016, 'synopsis' => 'Los Warren viajan a Londres para ayudar a una familia atormentada por un espíritu maligno.', 'image' => 'conjuring2.jpg', 'rating' => 7, 'director_id' => 3, 'production_company_id' => 9, 'country' => 'US'],
+            ['id' => 25, 'title' => 'Insidious', 'year' => 2010, 'synopsis' => 'Una familia descubre que su hijo está atrapado en un reino astral y recurre a especialistas en lo paranormal para rescatarlo.', 'image' => 'insidious.jpg', 'rating' => 7, 'director_id' => 3, 'production_company_id' => 3, 'country' => 'US'],
         ];
 
         foreach ($moviesData as $movie) {
@@ -170,9 +176,7 @@ class HorrorBlockbustersSeeder extends Seeder
             ['movie_id' => 7, 'actor_id' => 16],  // Hereditary - Toni Collette
             ['movie_id' => 8, 'actor_id' => 8],   // Midsommar - Florence Pugh
             ['movie_id' => 9, 'actor_id' => 9],   // La bruja - Anya Taylor-Joy
-            ['movie_id' => 10, 'actor_id' => 5],  // Scream 2 - Neve Campbell
-
-            // Nuevas películas
+            ['movie_id' => 10, 'actor_id' => 8],  // It Follows - Florence Pugh (como sustituta de la protagonista)
             ['movie_id' => 11, 'actor_id' => 11], // Get Out - Daniel Kaluuya
             ['movie_id' => 12, 'actor_id' => 12], // Us - Lupita Nyong'o
             ['movie_id' => 13, 'actor_id' => 13], // El resplandor - Jack Nicholson
@@ -187,8 +191,8 @@ class HorrorBlockbustersSeeder extends Seeder
             ['movie_id' => 22, 'actor_id' => 23], // It - Bill Skarsgård
             ['movie_id' => 23, 'actor_id' => 25], // El hombre invisible - Elisabeth Moss
             ['movie_id' => 24, 'actor_id' => 22], // El faro - (usando Thomasin McKenzie como sustituto)
-            ['movie_id' => 25, 'actor_id' => 3],  // Conjuring 2 - Patrick Wilson
-            ['movie_id' => 25, 'actor_id' => 17], // Conjuring 2 - Vera Farmiga
+            ['movie_id' => 25, 'actor_id' => 3],  // Insidious - Patrick Wilson
+            ['movie_id' => 25, 'actor_id' => 17], // Insidious - Vera Farmiga
         ]);
 
         // Tabla pivote movie_subgenre
@@ -209,9 +213,9 @@ class HorrorBlockbustersSeeder extends Seeder
             ['movie_id' => 8, 'subgenre_id' => 7],   // Midsommar - Terror folk
             ['movie_id' => 9, 'subgenre_id' => 7],   // La bruja - Terror folk
             ['movie_id' => 9, 'subgenre_id' => 3],   // La bruja - Terror psicológico
-            ['movie_id' => 10, 'subgenre_id' => 1],  // Scream 2 - Slasher
+            ['movie_id' => 10, 'subgenre_id' => 3],  // Terror psicológico
+            ['movie_id' => 10, 'subgenre_id' => 8],  // Terror doméstico
 
-            // Nuevas películas
             ['movie_id' => 11, 'subgenre_id' => 9],  // Get Out - Terror social
             ['movie_id' => 11, 'subgenre_id' => 3],  // Get Out - Terror psicológico
             ['movie_id' => 12, 'subgenre_id' => 9],  // Us - Terror social
@@ -238,8 +242,8 @@ class HorrorBlockbustersSeeder extends Seeder
             ['movie_id' => 23, 'subgenre_id' => 8],  // El hombre invisible - Terror doméstico
             ['movie_id' => 24, 'subgenre_id' => 3],  // El faro - Terror psicológico
             ['movie_id' => 24, 'subgenre_id' => 15], // El faro - Terror de aislamiento
-            ['movie_id' => 25, 'subgenre_id' => 2],  // Conjuring 2 - Sobrenatural
-            ['movie_id' => 25, 'subgenre_id' => 11], // Conjuring 2 - Posesión
+            ['movie_id' => 25, 'subgenre_id' => 2],  // Sobrenatural
+            ['movie_id' => 25, 'subgenre_id' => 11], // Posesión
         ]);
 
         $reviewsData = [

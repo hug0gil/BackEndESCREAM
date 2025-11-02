@@ -2,77 +2,61 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Movie;
-use App\Models\Plan;
-use App\Models\Subgenre;
-use Illuminate\Database\QueryException;
+use App\Services\Movie\MovieService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
 class MoviesController extends Controller
 {
+    public function __construct(private MovieService $movieService) {}
+
 
     public function index(Request $request)
     {
         $perPage = $request->query("per_page", 10);
-        $movies = Movie::paginate($perPage);
 
-        return response()->json($movies);
+        $movies = $this->movieService->getAllPaginated($perPage);
+        return response()->json($movies, Response::HTTP_OK);
     }
 
     public function show(Movie $movie)
     {
-        // Cargamos las relaciones para obtener datos importantes y relacionados con la movie
-        $movie->load(['actors', 'director', 'productionCompany', 'subgenres']);
-        return response()->json(["movieData" => $movie], Response::HTTP_OK);
+        $movieData = $this->movieService->getMovieWithRelations($movie);
+        return response()->json(['movieData' => $movieData], Response::HTTP_OK);
     }
 
-    public function update(UpdateMovieRequest $updateMovieRequest, Movie $movie)
+    public function update(UpdateMovieRequest $request, Movie $movie)
     {
-
         try {
-            // Actualiza campos de la tabla principal
-            $movie->update($updateMovieRequest->validated());
-
-            // Actualiza actores si vienen en la request
-            if ($updateMovieRequest->has('actor_ids')) {
-                $movie->actors()->sync($updateMovieRequest->validated('actor_ids', []));
-            }
-
-            // Actualiza subgéneros si vienen en la request
-            if ($updateMovieRequest->has('subgenre_ids')) {
-                $movie->subgenres()->sync($updateMovieRequest->validated('subgenre_ids', []));
-            }
-
-            return response()->json(["message" => "Movie updated successfully!", $movie], Response::HTTP_OK);
-        } catch (ValidationException $e) {
-            return response()->json(["errors" => $e->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
+            $updated = $this->movieService->updateMovie($movie, $request->validated());
+            return response()->json([
+                "message" => "Movie updated successfully!",
+                "movie" => $updated
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                "error" => "Failed to update movie",
+                "details" => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function destroy(Movie $movie)
     {
-        try {
-            $movie->delete();
-            return response()->json(["message" => "Movie deleted successfully"], Response::HTTP_OK);
-        } catch (QueryException $e) {
-            Log::error('Failed to delete movie', [
-                'movie_id' => $movie->id,
-                'error_message' => $e->getMessage(),
-                'error_code' => $e->getCode()
-            ]);
+        $deleted = $this->movieService->deleteMovie($movie);
 
-            return response()->json(["error" => "Cannot delete movie due to database constraints"], Response::HTTP_CONFLICT);
+        if ($deleted) {
+            return response()->json(["message" => "Movie deleted successfully"], Response::HTTP_OK);
         }
+
+        return response()->json(["error" => "Cannot delete movie due to database constraints"], Response::HTTP_CONFLICT);
     }
 
     public function getAllPlans()
     {
-        $plans = Plan::all();
+        $plans = $this->movieService->getAllPlans();
         return response()->json($plans, Response::HTTP_OK);
     }
 
@@ -83,17 +67,11 @@ class MoviesController extends Controller
 
     public function getMoviePerSubgenre(string $slug)
     {
-        $subgenre = Subgenre::where('slug', $slug)->first();
+        $movies = $this->movieService->getMoviesBySubgenre($slug);
 
-        if (!$subgenre) {
+        if (!$movies) {
             return response()->json(['message' => 'Subgenre not found'], Response::HTTP_NOT_FOUND);
         }
-
-        $movies = $subgenre->movies()->with(['actors', 'director', 'productionCompany', 'subgenres'])->get();
-        /*
-        $subgenre->movies() = movies del subgenero
-        with($campos) = traemos los datos importantes de las peliculas
-        */
 
         return response()->json($movies, Response::HTTP_OK);
     }

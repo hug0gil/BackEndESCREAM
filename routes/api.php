@@ -29,7 +29,7 @@ Route::prefix('users')->group(function () {
     });
 
     Route::get("", [UsersController::class, "index"]);
-    Route::get("{user}", [UsersController::class, "getUser"]);
+    Route::get("{user}", [UsersController::class, "show"]);
     Route::get("plan/{id}", [UsersController::class, "getPlan"]);
 });
 
@@ -48,9 +48,9 @@ Route::prefix('/movies/subgenres')->group(function (): void {
 Route::get("/movies/plans", [MoviesController::class, "getAllPlans"]);
 Route::get('/movies', [MoviesController::class, 'index']);
 Route::get('/movies/{movie}', [MoviesController::class, 'show']);
-Route::get('/movies/subgenre/{subgenreSlug}', [MoviesController::class, 'getMoviePerSubgenre']);
+Route::get('/movies/subgenre/{subgenreSlug}', [MoviesController::class, 'getMoviePerSubgenre'])->middleware([LogRequests::class]);
 Route::get('/movies/getImage/{movie}', [MoviesController::class, 'getImage']);
-Route::apiResource('/movies', MoviesController::class)->except(['index', 'show'])->middleware([LogRequests::class]);
+Route::apiResource('/movies', MoviesController::class)->except(['index', 'show'])->middleware([LogRequests::class, CheckRole::class]);
 
 //, CheckRole::class
 
