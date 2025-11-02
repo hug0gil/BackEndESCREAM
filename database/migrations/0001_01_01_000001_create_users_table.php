@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->dateTime('start_date')->nullable();
+            $table->dateTime('start_date')->default(now());
             $table->dateTime('end_date')->nullable();
             $table->boolean('subscribed')->default(false);
             $table->integer('admin_level')->default(0); // Si tiene nivel 0 es un User y si es mayor es Admin, cuanto más alto más nivel de administración

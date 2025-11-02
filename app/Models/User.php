@@ -62,6 +62,29 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    /**
+     * Verifica si la suscripción está activa (accessor simple)
+     */
+    public function hasActiveSubscription(): bool
+    {
+        return $this->subscribed
+            && $this->end_date
+            && now()->lessThanOrEqualTo($this->end_date);
+    }
+
+    /**
+     * Días restantes (accessor simple)
+     */
+    public function daysRemaining(): ?int
+    {
+        if (!$this->end_date) {
+            return null;
+        }
+
+        $days = now()->diffInDays($this->end_date, false);
+        return $days > 0 ? (int)$days : 0;
+    }
+
     public function plan()
     {
         return $this->belongsTo(Plan::class); // user -> pertenece a un plan

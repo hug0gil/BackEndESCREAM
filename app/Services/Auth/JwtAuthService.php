@@ -3,6 +3,7 @@
 namespace App\Services\Auth;
 
 use App\Models\User;
+use App\Services\Subscription\SubscriptionService;
 use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -10,6 +11,9 @@ use Exception;
 
 class JwtAuthService
 {
+
+    public function __construct(private SubscriptionService $subscriptionService) {}
+
     public function login(array $credentials, string $ip)
     {
         $user = User::where('email', $credentials['email'])->first();
@@ -28,7 +32,7 @@ class JwtAuthService
                 ]);
                 throw new Exception('Email or password incorrect');
             }
-
+            $this->subscriptionService->activate($user);
             return $token;
         } catch (JWTException $e) {
             Log::error("Token generation failed", [
