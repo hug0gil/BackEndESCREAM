@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Monoton&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Righteous&display=swap');
+
+:root {
+  --color-primary: #0D0DFF;
+  --color-secondary: #1A1A1A;
+  --color-accent1: #FF3C38;
+  --color-accent2: #FF9F1C;
+  --color-text: #FFFFFF;
+  --color-hover: #E84726;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--color-secondary);
+  color: var(--color-text);
+  font-family: 'Montserrat', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Títulos de películas */
+h1,
+h2,
+.movie-title {
+  font-family: 'Righteous', sans-serif;
+  color: var(--color-text);
+  letter-spacing: 1px;
+  font-weight: 400;
+}
+
+/* Labels y categorías (Año, País, Valoración, etc.) */
+h3,
+.label,
+.category {
+  font-family: 'Monoton', cursive;
+  color: var(--color-accent2);
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+}
+
+/* Texto descriptivo (sinopsis, descripciones) */
+p,
+.description,
+.sinopsis {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--color-text);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+button {
+  background-color: var(--color-accent1);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-family: 'Righteous', sans-serif;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+}
+
+button:hover {
+  background-color: var(--color-hover);
+  box-shadow: 0 0 15px var(--color-hover);
+  transform: scale(1.05);
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 2rem auto;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 2px solid var(--color-accent2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 0 20px rgba(255, 159, 28, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(255, 159, 28, 0.3);
+  border-color: var(--color-hover);
+}

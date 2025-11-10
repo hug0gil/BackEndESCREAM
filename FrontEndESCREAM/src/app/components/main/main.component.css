@@ -1,0 +1,75 @@
+.main-content {
+  background: #a4a3a3;
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  text-align: center;
+}
+
+.main-content h1 {
+  color: #222;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.main-content p {
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.actions button {
+  background: #ff5733;
+  border: none;
+  color: white;
+  padding: 0.8rem 1.6rem;
+  border-radius: 8px;
+  margin: 0 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.actions button:hover {
+  background: #e64c2e;
+}
+
+.extra-links {
+  display: flex;
+  justify-content: center;
+  /* Centra los enlaces */
+  gap: 12px;
+  /* Crea un espacio consistente entre los elementos */
+  align-items: center;
+  /* Alinea verticalmente los enlaces y el separador */
+  width: 100%;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+/* Pseudo-elemento para añadir el separador SIN afectar la accesibilidad */
+.extra-links a:first-child::after {
+  content: '|';
+  /* El carácter que quieres como separador */
+  margin-left: 12px;
+  /* Espacio a la izquierda del separador */
+  color: #ccc;
+  /* Un color sutil para el separador */
+  pointer-events: none;
+  /* Evita que el separador sea interactivo */
+}
+
+.extra-links a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.extra-links a:hover,
+.extra-links a:focus {
+  text-decoration: underline;
+  outline: none;
+}
+
+.separator {
+  color: white;
+}

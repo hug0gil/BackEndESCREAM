@@ -1,0 +1,40 @@
+/* ===== FOOTER VINTAGE DARK ===== */
+
+footer {
+  background: linear-gradient(180deg, #0d0221 0%, #1a044c 100%);
+  border-top: 2px solid var(--color-accent3);
+  color: var(--color-text);
+  text-align: center;
+  padding: 1.5rem 1rem;
+  margin-top: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at top center, rgba(255, 60, 56, 0.1), transparent 70%);
+  pointer-events: none;
+}
+
+footer p {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  opacity: 0.8;
+}
+
+footer a {
+  color: var(--color-accent2);
+  margin: 0 8px;
+  transition: color 0.3s;
+}
+
+footer a:hover {
+  color: var(--color-hover);
+  text-shadow: 0 0 10px var(--color-hover);
+}

@@ -1,0 +1,14 @@
+div {
+  display: grid;
+  min-height: 100dvh;
+  grid-template-rows: auto 1fr auto;
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  /* centra horizontalmente */
+  align-items: center;
+  /* centra verticalmente */
+  padding: 2rem;
+}

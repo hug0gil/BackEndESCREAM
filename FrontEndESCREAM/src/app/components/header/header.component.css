@@ -1,0 +1,73 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 40px;
+  background-color: #2F2FFF;
+  border-bottom: 2px solid var(--color-accent1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header .logo {
+  display: flex;
+  align-items: center;
+}
+
+.header .logo span.es {
+  margin-left: 15px;
+  color: var(--color-accent1);
+  text-shadow: 3px 3px var(--color-accent2);
+}
+
+.header .logo span.cream {
+  margin-left: 5px;
+  color: var(--color-accent2);
+  text-shadow: 3px 3px var(--color-accent1);
+}
+
+.header .logo img {
+  height: 165px;
+  width: auto;
+  filter: drop-shadow(0 0 8px var(--color-accent1));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.header .logo img:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 12px var(--color-accent1));
+}
+
+.header .logo span {
+  font-family: 'Righteous', sans-serif;
+  font-size: 3.7rem;
+  letter-spacing: 3.5px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  cursor: pointer;
+}
+
+nav a {
+  font-family: 'Monoton', cursive;
+  color: var(--color-accent2);
+  text-shadow: 2px 2px var(--color-accent1);
+  background-color: transparent;
+  border: 3px solid var(--color-accent2);
+  padding: 12px 32px;
+  border-radius: 50px;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+}
+
+nav a:hover {
+  background-color: var(--color-accent2);
+  color: var(--color-primary);
+  box-shadow: 0 0 20px rgba(255, 159, 28, 0.6);
+  transform: translateY(-2px);
+}

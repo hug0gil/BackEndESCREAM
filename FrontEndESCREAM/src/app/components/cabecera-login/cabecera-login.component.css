@@ -1,0 +1,118 @@
+/* Contenedor principal */
+.login {
+    background: #a4a3a3;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+/* Caja del formulario */
+.login form {
+    background: #222;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    border: 3px solid#ff5733;
+}
+
+/* Título */
+.login h1 {
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Labels */
+.login p {
+    color: white;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+/* Inputs */
+.login input[type="text"],
+.login input[type="password"] {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #e1e1e1;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.login input[type="text"]:focus,
+.login input[type="password"]:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Botón */
+.login button[type="submit"] {
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: #ff5733;
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+
+.error-message {
+    color: #D8000C;
+    background-color: #f10505;
+    border: 1px solid #f10505;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 10px;
+    font-size: 0.9em;
+}
+
+a {
+    color: white;
+    font-size: 0.9rem;
+}
+
+.O2AuthContent {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.loginPill {
+    border: none;
+    background-color: #ff5733;
+    border-radius: 10px;
+    font-size: 15px;
+    padding: 8px;
+    margin: auto;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}

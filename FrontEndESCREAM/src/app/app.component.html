@@ -1,0 +1,11 @@
+<!-- Con header y footer -->
+@if (!isAuthPage) {
+<app-main-layout>
+  <app-movies-list></app-movies-list>
+</app-main-layout>
+}
+
+<!-- Sin header ni footer  -->
+@if (isAuthPage) {
+<router-outlet></router-outlet>
+}
