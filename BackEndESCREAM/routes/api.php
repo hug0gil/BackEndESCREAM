@@ -52,10 +52,12 @@ Route::get("/movies/plans", [MoviesController::class, "getAllPlans"]);
 Route::get('/movies/subgenres', [SubGenresController::class, "index"]);
 Route::get('/movies/subgenre/{subgenreSlug}', [MoviesController::class, 'getMoviePerSubgenre'])->middleware(LogRequests::class);
 Route::get('/movies/getImage/{movie}', [MoviesController::class, 'getImage']);
+Route::get('movies/', action: [MoviesController::class, 'index']);
+
 
 // AUTHTENTICATED + SUBSCRIBED MOVIES
 Route::prefix('movies')->middleware([CheckSubscription::class])->group(function () {
-    Route::get('/', [MoviesController::class, 'index']);
+    //Route::get('/', [MoviesController::class, 'index']);
     Route::get('/{movie}', [MoviesController::class, 'show']);
 });
 

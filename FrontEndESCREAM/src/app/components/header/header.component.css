@@ -1,3 +1,6 @@
+/* ==============================================================
+   HEADER PRINCIPAL
+   ============================================================== */
 .header {
   display: flex;
   justify-content: space-between;
@@ -5,47 +8,113 @@
   padding: 0px 40px;
   background-color: #2F2FFF;
   border-bottom: 2px solid var(--color-accent1);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 20px -4px var(--color-accent1);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
+/* ==============================================================
+   LOGO CON ANIMACIÓN DE OPACIDAD
+   ============================================================== */
 .header .logo {
   display: flex;
   align-items: center;
+  opacity: 0;
+  /* Fade-in general del logo completo para que aparezca suavemente */
+  animation: fadeIn 1s ease-out forwards;
+  /*
+  ease-out a animación empieza más rápido y termina más lento
+  forwards el elemento mantiene el estado final de la animación
+  */
 }
 
+/* ==============================================================
+   LETRAS DEL LOGO CON ANIMACIÓN LATERAL
+   ============================================================== */
+/* Span "ES" entra desde la izquierda con retraso */
 .header .logo span.es {
   margin-left: 15px;
   color: var(--color-accent1);
   text-shadow: 3px 3px var(--color-accent2);
+  opacity: 0;
+  animation: slideInLeft 0.8s ease-out forwards;
+  animation-delay: 0.6s;
+  /* cascada: comienza después del fade-in del logo */
 }
 
+/* Span "CREAM" entra desde la derecha con retraso */
 .header .logo span.cream {
   margin-left: 5px;
   color: var(--color-accent2);
   text-shadow: 3px 3px var(--color-accent1);
+  opacity: 0;
+  animation: slideInRight 0.8s ease-out forwards;
+  animation-delay: 0.9s;
+  /* cascada */
 }
 
+/* Keyframes para entrada lateral de las letras */
+/* slideInLeft: desde izquierda a su posición original */
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-60px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* slideInRight: desde derecha a su posición original */
+@keyframes slideInRight {
+  from {
+    transform: translateX(60px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ==============================================================
+   IMAGEN DEL LOGO CON ANIMACIÓN Y HOVER
+   ============================================================== */
 .header .logo img {
   height: 165px;
   width: auto;
   filter: drop-shadow(0 0 8px var(--color-accent1));
-  transition: transform 0.3s ease, filter 0.3s ease;
+  opacity: 0;
+  /* Fade-in independiente del logo, para que imagen y letras puedan animarse separadamente */
+  animation: fadeIn 1s ease-out forwards;
+  transition: transform 0.8s ease, filter 0.6s ease;
+  cursor: pointer;
 }
 
+/* Hover de la imagen: escalado y glow */
 .header .logo img:hover {
-  transform: scale(1.08);
+  transform: scale(1.10);
+  /* Escala la imagen suavemente */
   filter: drop-shadow(0 0 12px var(--color-accent1));
+  /* Glow más intenso al pasar el cursor */
 }
 
+/* ==============================================================
+   ESTILO DE LETRAS DEL LOGO
+   ============================================================== */
 .header .logo span {
   font-family: 'Righteous', sans-serif;
   font-size: 3.7rem;
   letter-spacing: 3.5px;
 }
 
+/* ==============================================================
+   NAV LINKS CON FADE-IN Y CASCADA
+   ============================================================== */
 .nav-links {
   display: flex;
   align-items: center;
@@ -53,7 +122,9 @@
   cursor: pointer;
 }
 
+/* Links individuales con fade-in y transición para hover */
 nav a {
+  display: inline-block;
   font-family: 'Monoton', cursive;
   color: var(--color-accent2);
   text-shadow: 2px 2px var(--color-accent1);
@@ -62,12 +133,46 @@ nav a {
   padding: 12px 32px;
   border-radius: 50px;
   letter-spacing: 2px;
-  transition: all 0.3s ease;
+
+  opacity: 0;
+  /* inicia invisible */
+  animation: fadeIn 0.5s ease-out forwards;
+  /* fade-in de cada enlace */
+  transition: transform 0.8s ease, box-shadow 0.8s ease, background-color 0.8s ease, color 0.8s ease;
 }
 
+/* Cascada de animación: cada link aparece ligeramente después del anterior */
+.nav-links a:nth-child(1) {
+  animation-delay: 1.4s;
+}
+
+.nav-links a:nth-child(2) {
+  animation-delay: 1.6s;
+}
+
+.nav-links a:nth-child(3) {
+  animation-delay: 1.8s;
+}
+
+/* Hover de los enlaces: eleva y aplica glow */
 nav a:hover {
+  transform: translateY(-8px);
+  /* se eleva suavemente */
   background-color: var(--color-accent2);
   color: var(--color-primary);
   box-shadow: 0 0 20px rgba(255, 159, 28, 0.6);
-  transform: translateY(-2px);
+}
+
+/* ==============================================================
+   KEYFRAMES FADE-IN GENERAL
+   ============================================================== */
+/* Utilizado para el logo, la imagen y los links. Solo cambia opacidad de 0 a 1 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
