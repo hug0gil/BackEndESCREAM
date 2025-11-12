@@ -11,7 +11,7 @@ use App\Http\Middleware\LogRequests;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/test", function () {
-    return response()->json(["message" => "El backend funciona correctamente"]);
+    return response()->json(["message" => "API funciona correctamente"]);
 });
 
 // USERS

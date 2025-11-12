@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from "../../components/header/header.component";
-import { MainComponent } from "../../components/main/main.component";
 import { FooterComponent } from "../../components/footer/footer.component";
-import { CabeceraLoginComponent } from "../../components/cabecera-login/cabecera-login.component";
+import { RouterOutlet } from "@angular/router";
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent],
+  imports: [HeaderComponent, FooterComponent, RouterOutlet],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css'
 })

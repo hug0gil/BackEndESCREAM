@@ -1,67 +1,82 @@
+/* ==============================================================
+   MAIN CONTENT ESTILO HEADER MODERNO
+   ============================================================== */
+
 .main-content {
-  background: #a4a3a3;
+  background: linear-gradient(180deg, #160435 10%, #2F2FFF 100%);
   padding: 2rem 3rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 20px 3px var(--color-accent1);
   max-width: 800px;
   text-align: center;
+  color: white;
+  opacity: 0;
+  transform: scale(0.95) translateY(20px);
+  animation: formFadeIn 0.8s ease-out 0.2s forwards;
 }
 
 .main-content h1 {
-  color: #222;
   font-size: 2rem;
   margin-bottom: 1rem;
+  font-family: 'Righteous', sans-serif;
+  color: var(--color-accent2);
+  text-shadow: 2px 2px var(--color-accent1);
 }
 
 .main-content p {
-  color: #555;
+  color: #ccc;
   margin-bottom: 2rem;
+  font-family: 'Montserrat', sans-serif;
 }
 
+/* ==============================================================
+   BOTONES DE ACCIONES
+   ============================================================== */
 .actions button {
-  background: #ff5733;
+  background: var(--color-accent2);
+  font-family: 'Monoton';
   border: none;
-  color: white;
+  color: var(--color-primary);
+  text-shadow: 2px 2px var(--color-accent2);
   padding: 0.8rem 1.6rem;
-  border-radius: 8px;
+  border-radius: 50px;
   margin: 0 0.5rem;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: transform 0.8s ease, box-shadow 0.8s ease, background-color 0.8s ease, color 0.8s ease;
 }
 
 .actions button:hover {
-  background: #e64c2e;
+  transform: translateY(-6px);
+  background-color: var(--color-accent1);
+  box-shadow: 0 0 20px rgba(255, 159, 28, 0.6);
+  color: var(--color-primary);
 }
 
+/* ==============================================================
+   EXTRA LINKS
+   ============================================================== */
 .extra-links {
   display: flex;
   justify-content: center;
-  /* Centra los enlaces */
   gap: 12px;
-  /* Crea un espacio consistente entre los elementos */
   align-items: center;
-  /* Alinea verticalmente los enlaces y el separador */
   width: 100%;
   margin-top: 20px;
   font-size: 14px;
 }
 
-/* Pseudo-elemento para añadir el separador SIN afectar la accesibilidad */
 .extra-links a:first-child::after {
   content: '|';
-  /* El carácter que quieres como separador */
   margin-left: 12px;
-  /* Espacio a la izquierda del separador */
   color: #ccc;
-  /* Un color sutil para el separador */
   pointer-events: none;
-  /* Evita que el separador sea interactivo */
 }
 
 .extra-links a {
-  color: #007bff;
+  color: var(--color-accent2);
   text-decoration: none;
+  transition: color 0.8s ease, text-decoration 0.8s ease;
 }
 
 .extra-links a:hover,
@@ -71,5 +86,12 @@
 }
 
 .separator {
-  color: white;
+  color: var(--color-primary);
+}
+
+@keyframes formFadeIn {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }

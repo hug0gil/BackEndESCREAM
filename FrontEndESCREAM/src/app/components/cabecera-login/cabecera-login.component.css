@@ -1,118 +1,197 @@
-/* Contenedor principal */
+/* ==============================================================
+   CONTENEDOR PRINCIPAL DEL LOGIN
+   ============================================================== */
 .login {
-    background: #a4a3a3;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 2rem;
 }
 
-/* Caja del formulario */
+/* ==============================================================
+   CAJA DEL FORMULARIO CON EFECTO VIDRIO (GLASSMORPHISM)
+   ============================================================== */
 .login form {
-    background: #222;
+    background: linear-gradient(180deg, #160435 10%, #2F2FFF 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 1px 20px 3px var(--color-accent1);
+    color: white;
     padding: 3rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
+    border-radius: 16px;
+    max-width: 420px;
     width: 100%;
-    border: 3px solid#ff5733;
+
+    /* Borde y sombra "glow" con los colores de acento */
+    border: 2px solid rgba(102, 126, 234, 0.5);
+    /* var(--color-accent1) con opacidad */
+
+    /* Animación de entrada suave */
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+    animation: formFadeIn 0.8s ease-out 0.2s forwards;
 }
 
-/* Título */
+/* ==============================================================
+   TÍTULO, LABELS Y TEXTOS
+   ============================================================== */
 .login h1 {
+    font-family: 'Righteous', sans-serif;
     color: white;
-    font-size: 2rem;
-    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;
     text-align: center;
-    font-weight: 600;
+    text-shadow: 0 0 10px var(--color-accent2);
+    letter-spacing: 1.5px;
 }
 
-/* Labels */
 .login p {
-    color: white;
-    font-size: 0.9rem;
+    color: var(--color-accent2);
+    font-size: 0.8rem;
     margin-bottom: 0.5rem;
-    font-weight: 500;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* Inputs */
+/* ==============================================================
+   INPUTS DE TEXTO Y PASSWORD
+   ============================================================== */
 .login input[type="text"],
 .login input[type="password"] {
     width: 100%;
-    padding: 0.8rem;
-    border: 2px solid #e1e1e1;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid transparent;
+    border-bottom: 2px solid rgba(102, 126, 234, 0.4);
     border-radius: 8px;
     font-size: 1rem;
-    margin-bottom: 1rem;
-    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease-out;
     outline: none;
 }
 
+/* Efecto focus: el input se ilumina */
 .login input[type="text"]:focus,
 .login input[type="password"]:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--color-accent2);
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 15px rgba(255, 159, 28, 0.3);
 }
 
-/* Botón */
+/* ==============================================================
+   BOTÓN DE SUBMIT ADAPTADO CON ESTILO PÍLDORA Y RETRO
+   ============================================================== */
 .login button[type="submit"] {
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    /* --- Propiedades fusionadas de la inspiración --- */
+    font-family: 'Monoton', cursive;
+    /* La fuente retro clave */
+    border-radius: 50px;
+    /* Forma de píldora súper redondeada */
+    /* Sombra de texto sutil para dar profundidad y legibilidad */
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
+
+    /* --- Propiedades originales ajustadas para el nuevo estilo --- */
     width: 100%;
+    padding: 1rem 2rem;
+    /* Mantenemos un buen acolchado */
+    margin: 1.5rem 0;
+    /* Aumentamos el margen para que respire */
+    font-size: 1.1rem;
+    /* Un poco más grande para la fuente 'Monoton' */
+    font-weight: normal;
+    /* 'Monoton' no necesita bold */
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    background: #ff5733;
-    color: white;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    letter-spacing: 2px;
+    /* Más espaciado para esta fuente */
+
+    /* --- Estilo visual y de interacción --- */
+    background: var(--color-accent2);
+    color: var(--color-primary);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(255, 159, 28, 0.4);
+    /* Sombra "glow" */
+    transition: all 0.3s ease-out;
 }
 
-button:hover {
-    transform: translateY(-2px);
+/* Efecto hover mejorado: se eleva y brilla más */
+.login button[type="submit"]:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(255, 159, 28, 0.6);
 }
 
-button:active {
-    transform: translateY(0);
-}
-
-
-.error-message {
-    color: #D8000C;
-    background-color: #f10505;
-    border: 1px solid #f10505;
-    padding: 15px;
-    margin-top: 10px;
-    border-radius: 10px;
-    font-size: 0.9em;
-}
-
-a {
-    color: white;
+/* ==============================================================
+   BOTONES SECUNDARIOS Y ENLACES (OAuth, etc.)
+   ============================================================== */
+.login a {
+    color: var(--color-accent2);
     font-size: 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.login a:hover {
+    color: var(--color-accent1);
+
 }
 
 .O2AuthContent {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 1.5rem;
+    gap: 1rem;
+    border-top: 1px solid rgba(102, 126, 234, 0.2);
+    padding-top: 1.5rem;
 }
 
 .loginPill {
-    border: none;
-    background-color: #ff5733;
-    border-radius: 10px;
-    font-size: 15px;
-    padding: 8px;
-    margin: auto;
-    color: white;
+    border: 2px solid var(--color-accent1);
+    background-color: transparent;
+    color: var(--color-accent1);
+    border-radius: 50px;
+    /* Píldora redondeada */
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
     cursor: pointer;
     transition: all 0.3s ease;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+}
+
+.loginPill:hover {
+    background-color: var(--color-accent1);
+    color: white;
+    box-shadow: 0 0 20px var(--color-accent1);
+    transform: translateY(-2px);
+}
+
+/* ==============================================================
+   MENSAJES DE ERROR INTEGRADOS
+   ============================================================== */
+.error-message {
+    color: #f8d7da;
+    background-color: rgba(220, 53, 69, 0.2);
+    border: 1px solid rgba(220, 53, 69, 0.5);
+    padding: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+/* ==============================================================
+   KEYFRAMES PARA ANIMACIÓN DE ENTRADA
+   ============================================================== */
+@keyframes formFadeIn {
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }

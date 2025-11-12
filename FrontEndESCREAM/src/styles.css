@@ -4,9 +4,8 @@
   --color-primary: #0D0DFF;
   --color-secondary: #1A1A1A;
   --color-accent1: #FF3C38;
-  --color-accent2: #FF9F1C;
+  --color-accent2: #ff9f1c;
   --color-text: #FFFFFF;
-  --color-hover: #E84726;
 }
 
 * {
@@ -16,7 +15,10 @@
 }
 
 body {
-  background: var(--color-secondary);
+  background:
+    radial-gradient(circle 500px at 50% 200px, #3e3e3e, transparent),
+    var(--color-secondary);
+  background-attachment: fixed;
   color: var(--color-text);
   font-family: 'Montserrat', sans-serif;
   min-height: 100vh;
@@ -34,6 +36,7 @@ h2,
   letter-spacing: 1px;
   font-weight: 400;
 }
+
 
 /* Labels y categorías (Año, País, Valoración, etc.) */
 h3,
